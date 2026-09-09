@@ -1,20 +1,23 @@
 package org.firstinspires.ftc.teamcode.BehaviorSystem.Demos;
 
+import com.pedropathing.follower.Follower;
+import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.teamcode.BehaviorSystem.GroupBuilder;
-import org.firstinspires.ftc.teamcode.BehaviorSystem.ParallelGroup;
 import org.firstinspires.ftc.teamcode.BehaviorSystem.StateMachine.BaseState;
+import org.firstinspires.ftc.teamcode.BehaviorSystem.StateMachine.InterruptableTaskState;
 import org.firstinspires.ftc.teamcode.BehaviorSystem.StateMachine.State;
 import org.firstinspires.ftc.teamcode.BehaviorSystem.StateMachine.StateMachine;
-import org.firstinspires.ftc.teamcode.BehaviorSystem.StateMachine.TaskState;
+import org.firstinspires.ftc.teamcode.BehaviorSystem.UserBehaviors.FollowPath;
 import org.firstinspires.ftc.teamcode.BehaviorSystem.UserBehaviors.GamepadDrive;
-import org.firstinspires.ftc.teamcode.BehaviorSystem.UserBehaviors.WaitMS;
-import org.firstinspires.ftc.teamcode.BehaviorSystem.UserBehaviors.WaitUntil;
 import org.firstinspires.ftc.teamcode.Blackboard;
 import org.firstinspires.ftc.teamcode.Chassis;
 import org.firstinspires.ftc.teamcode.ControlHub;
+import org.firstinspires.ftc.teamcode.Pedro.PedroUtility;
+import org.firstinspires.ftc.teamcode.Pedro.UserPoses;
 
 @TeleOp(name="Behavior System Driving Demo", group="Demos")
 public class DrivingDemo extends OpMode {
@@ -22,35 +25,75 @@ public class DrivingDemo extends OpMode {
     Chassis chassis;
 
     StateMachine mainStateMachine;
-    State gamepadDrivingState, turnAroundState;
+    State gamepadDrivingState, followPathState;
+
+    IMU imu;
+    Follower follower;
+    PedroUtility pedroUtility;
+
+    PathChain fromBottomLeftToBottomRight,
+            fromBottomRightToTopRight,
+            fromTopRightToTopLeft,
+            fromTopLeftToBottomLeft;
 
     @Override
     public void init() {
         controlHub = new ControlHub();
         chassis = new Chassis(hardwareMap);
 
+        imu = hardwareMap.get(IMU.class, "imu");
+        follower = controlHub.createFollower(hardwareMap);
+        pedroUtility = new PedroUtility(follower);
+
+        imu.resetYaw();
+
+        // PathChains
+        fromBottomLeftToBottomRight = pedroUtility.fromTo(
+                UserPoses.bottomLeft,
+                UserPoses.bottomRight
+        );
+        fromBottomRightToTopRight = pedroUtility.fromTo(
+                UserPoses.bottomRight,
+                UserPoses.topRight
+        );
+        fromTopRightToTopLeft = pedroUtility.fromTo(
+                UserPoses.topRight,
+                UserPoses.topLeft
+        );
+        fromTopLeftToBottomLeft = pedroUtility.fromTo(
+                UserPoses.topLeft,
+                UserPoses.bottomLeft
+        );
+
+        // --- MAIN STATE MACHINE ---
+
+        mainStateMachine = new StateMachine("Main");
+
         gamepadDrivingState = new BaseState(
                 new GamepadDrive(chassis, gamepad1),
                 () -> {
-                    if (gamepad1.a) return turnAroundState;
+                    if (gamepad1.b) return followPathState;
                     return gamepadDrivingState;
                 },
-                () -> "[A: turn around]"
+                () -> "[Press B: follow path]"
         );
 
-        turnAroundState = new TaskState(
+        followPathState = new InterruptableTaskState(
                 GroupBuilder.create()
-                        .parallel(ParallelGroup.CompletionCondition.ANY, "Turning around")
-                            .add(new WaitMS(3000, "3000 ms"))
-                            .add(new WaitUntil(() -> gamepad1.b, "Cancel on B press"))
-                            .add(new WaitUntil(() -> false, "Ummm just pretend I'm turning around rn"))
+                        .sequential("Follow paths in a square")
+                            .add(new FollowPath(follower, fromBottomLeftToBottomRight))
+                            .add(new FollowPath(follower, fromBottomRightToTopRight))
+                            .add(new FollowPath(follower, fromTopRightToTopLeft))
+                            .add(new FollowPath(follower, fromTopLeftToBottomLeft))
                         .end()
                         .build(),
                 () -> gamepadDrivingState,
-                () -> "[B: cancel]"
+                () -> {
+                    if (gamepad1.left_bumper) return gamepadDrivingState;
+                    return followPathState;
+                },
+                () -> "[Left bumper: cancel]"
         );
-
-        mainStateMachine = new StateMachine("Main State Machine");
     }
 
     @Override
@@ -68,6 +111,8 @@ public class DrivingDemo extends OpMode {
 
     @Override
     public void loop() {
+        telemetry.addData("Heading", follower.getHeading());
+
         mainStateMachine.update();
         mainStateMachine.processTelemetry(telemetry, "");
 

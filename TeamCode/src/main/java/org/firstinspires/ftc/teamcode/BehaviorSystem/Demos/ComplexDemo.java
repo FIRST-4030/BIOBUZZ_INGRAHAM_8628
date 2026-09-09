@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.BehaviorSystem.Demos;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -19,8 +20,12 @@ import org.firstinspires.ftc.teamcode.ControlHub;
 
 /**
  * Demo OpMode pretending to simulate some states that may have appeared during the DECODE season.
+ * Demonstrates use of nested stateMachines.
+ *
+ * (Not very readable, still for internal use mostly)
  * @author Edson James
  */
+@Disabled
 @TeleOp(name="Behavior System Complex Demo", group="Demos")
 public class ComplexDemo extends OpMode {
     ControlHub controlHub;

@@ -11,7 +11,14 @@ public class PedroUtility {
     public PedroUtility(Follower follower) {
         this.follower = follower;
     }
-    public PathChain makeCommonTwoPosePathChain(Pose pose1, Pose pose2) {
+
+    /**
+     * Returns a PathChain starting from a given pose and going to another given pose.
+     * @param pose1 The starting pose
+     * @param pose2 The ending pose
+     * @return The final PathChain created
+     */
+    public PathChain fromTo(Pose pose1, Pose pose2) {
         return follower.pathBuilder()
                 .addPath(new BezierLine(
                         pose1,

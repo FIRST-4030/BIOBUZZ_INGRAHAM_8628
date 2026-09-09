@@ -15,7 +15,7 @@ public class PedroConstantsBioBuzzDemoBot implements PedroConstants {
     @Override
     public FollowerConstants getFollowerConstants() {
         return new FollowerConstants()
-                .mass(5.604)  // Kg
+                .mass(6.528)  // Kg
                 .forwardZeroPowerAcceleration(-46.147414758850900)
                 .lateralZeroPowerAcceleration(-63.242491832933500)
                 .translationalPIDFCoefficients(new PIDFCoefficients(0.08, 0, 0.00, 0.025))
@@ -47,12 +47,12 @@ public class PedroConstantsBioBuzzDemoBot implements PedroConstants {
     @Override
     public PinpointConstants getLocalizerConstants() {
         return new PinpointConstants()
-                .forwardPodY(-5.5)
-                .strafePodX(5.0)
+                .forwardPodY(-3.75)
+                .strafePodX(3.75)
                 .distanceUnit(DistanceUnit.INCH)
                 .hardwareMapName("pinpoint")
                 .encoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD)
-                .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD)
-                .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD);
+                .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED)
+                .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED);
     }
 }

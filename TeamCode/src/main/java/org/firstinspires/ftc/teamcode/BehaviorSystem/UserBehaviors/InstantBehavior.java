@@ -1,14 +1,23 @@
 package org.firstinspires.ftc.teamcode.BehaviorSystem.UserBehaviors;
 
-import org.firstinspires.ftc.robotcore.external.Supplier;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.BehaviorSystem.Behavior;
 
+/**
+ * Used to create behaviors that complete immediately using a Runnable instead of entire new
+ * behavior implementation classes.
+ * @author Edson James
+ */
 public class InstantBehavior implements Behavior {
 
     private final String label;
     private final Runnable actionRunnable;
 
+    /**
+     * Used to create behaviors that complete immediately using a Runnable instead of entire new
+     * behavior implementation classes.
+     * @param actionRunnable The Runnable for the instant action to be taken
+     */
     public InstantBehavior(
             Runnable actionRunnable
     ) {
@@ -18,6 +27,11 @@ public class InstantBehavior implements Behavior {
         );
     }
 
+    /**
+     * Used to create behaviors that complete immediately using a Runnable instead of entire new
+     * behavior implementation classes.
+     * @param actionRunnable The Runnable for the instant action to be taken
+     */
     public InstantBehavior(
             Runnable actionRunnable,
             String label

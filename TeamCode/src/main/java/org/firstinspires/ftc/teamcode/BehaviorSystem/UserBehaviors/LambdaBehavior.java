@@ -4,6 +4,11 @@ import org.firstinspires.ftc.robotcore.external.Supplier;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.BehaviorSystem.Behavior;
 
+/**
+ * Used to create unique behaviors using lambdas instead of entire new behavior implementation
+ * classes.
+ * @author Edson James
+ */
 public class LambdaBehavior implements Behavior {
 
     private final String label;
@@ -13,6 +18,22 @@ public class LambdaBehavior implements Behavior {
     private final Supplier<Boolean> isCompleteSupplier;
     private final Runnable exitRunnable;
     private final Supplier<String> telemetrySupplier;
+
+    public LambdaBehavior(
+            Runnable enterRunnable,
+            Runnable updateRunnable,
+            Supplier<Boolean> isCompleteSupplier,
+            Runnable exitRunnable
+    ) {
+        this(
+                enterRunnable,
+                updateRunnable,
+                isCompleteSupplier,
+                exitRunnable,
+                () -> "",
+                "Lambda Behavior"
+        );
+    }
 
     public LambdaBehavior(
             Runnable enterRunnable,
