@@ -63,7 +63,7 @@ public class FollowPath implements Behavior {
      */
     @Override
     public boolean isComplete() {
-        return entered && !follower.isBusy();
+        return entered && !follower.isBusy() && follower.getCurrentTValue() > 0.98;
     }
 
     @Override

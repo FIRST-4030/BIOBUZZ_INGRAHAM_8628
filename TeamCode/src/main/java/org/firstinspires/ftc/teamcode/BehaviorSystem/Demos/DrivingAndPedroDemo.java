@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.Pedro.UserPoses;
  * BehaviorSystem.
  * @author Edson James
  */
-@TeleOp(name="Behavior System Driving Demo", group="Demos")
+@TeleOp(name="Behavior System Driving + Pedro", group="Demos")
 public class DrivingAndPedroDemo extends OpMode {
 
     // General setup
@@ -74,17 +74,17 @@ public class DrivingAndPedroDemo extends OpMode {
         );
         goBottomRightToTopRight = new FollowPath(
                 follower,
-                pedroUtility.fromTo(UserPoses.bottomLeft, UserPoses.bottomRight),
+                pedroUtility.fromTo(UserPoses.bottomRight, UserPoses.topRight),
                 "Go from bottom right to top right"
         );
         goTopRightToTopLeft = new FollowPath(
                 follower,
-                pedroUtility.fromTo(UserPoses.bottomLeft, UserPoses.bottomRight),
+                pedroUtility.fromTo(UserPoses.topRight, UserPoses.topLeft),
                 "Go from top right to top left"
         );
         goTopLeftToBottomLeft = new FollowPath(
                 follower,
-                pedroUtility.fromTo(UserPoses.bottomLeft, UserPoses.bottomRight),
+                pedroUtility.fromTo(UserPoses.topLeft, UserPoses.bottomLeft),
                 "Go from top left to bottom left"
         );
 
