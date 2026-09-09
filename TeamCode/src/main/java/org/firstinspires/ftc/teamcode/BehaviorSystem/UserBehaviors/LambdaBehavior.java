@@ -19,6 +19,14 @@ public class LambdaBehavior implements Behavior {
     private final Runnable exitRunnable;
     private final Supplier<String> telemetrySupplier;
 
+    /**
+     * Used to create unique behaviors using lambdas instead of entire new behavior implementation
+     * classes.
+     * @param enterRunnable The Runnable that executes when the behavior enters.
+     * @param updateRunnable The Runnable that executes each frame the behavior is active.
+     * @param isCompleteSupplier Boolean Supplier for if the behavior is complete.
+     * @param exitRunnable The Runnable that executes when the behavior exits.
+     */
     public LambdaBehavior(
             Runnable enterRunnable,
             Runnable updateRunnable,
@@ -35,6 +43,15 @@ public class LambdaBehavior implements Behavior {
         );
     }
 
+    /**
+     * Used to create unique behaviors using lambdas instead of entire new behavior implementation
+     * classes.
+     * @param enterRunnable The Runnable that executes when the behavior enters.
+     * @param updateRunnable The Runnable that executes each frame the behavior is active.
+     * @param isCompleteSupplier Boolean Supplier for if the behavior is complete.
+     * @param exitRunnable The Runnable that executes when the behavior exits.
+     * @param telemetrySupplier String Supplier for the telemetry output of the behavior
+     */
     public LambdaBehavior(
             Runnable enterRunnable,
             Runnable updateRunnable,
@@ -52,6 +69,16 @@ public class LambdaBehavior implements Behavior {
         );
     }
 
+    /**
+     * Used to create unique behaviors using lambdas instead of entire new behavior implementation
+     * classes.
+     * @param enterRunnable The Runnable that executes when the behavior enters.
+     * @param updateRunnable The Runnable that executes each frame the behavior is active.
+     * @param isCompleteSupplier Boolean Supplier for if the behavior is complete.
+     * @param exitRunnable The Runnable that executes when the behavior exits.
+     * @param telemetrySupplier String Supplier for the telemetry output of the behavior
+     * @param label Label for this behavior
+     */
     public LambdaBehavior(
             Runnable enterRunnable,
             Runnable updateRunnable,

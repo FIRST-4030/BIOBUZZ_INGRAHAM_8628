@@ -16,18 +16,14 @@ public class UpdatingBehavior implements Behavior {
      * Used to create behaviors that execute a Runnable each frame they are active.
      * @param updateRunnable The Runnable to be executed each frame this behavior is active
      */
-    public UpdatingBehavior(
-            Runnable updateRunnable
-    ) {
-        this(
-                updateRunnable,
-                "Updating behavior"
-        );
+    public UpdatingBehavior(Runnable updateRunnable) {
+        this(updateRunnable, "Updating behavior");
     }
 
     /**
      * Used to create behaviors that execute a Runnable each frame they are active.
      * @param updateRunnable The Runnable to be executed each frame this behavior is active
+     * @param label Label for this behavior
      */
     public UpdatingBehavior(
             Runnable updateRunnable,

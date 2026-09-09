@@ -31,6 +31,7 @@ public class InstantBehavior implements Behavior {
      * Used to create behaviors that complete immediately using a Runnable instead of entire new
      * behavior implementation classes.
      * @param actionRunnable The Runnable for the instant action to be taken
+     * @param label Label for this behavior
      */
     public InstantBehavior(
             Runnable actionRunnable,
